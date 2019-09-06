@@ -1,2 +1,2 @@
 # bookingservice
-Microservice for booking seats in a theater
+Microservice for doing ticket booking in a theater
