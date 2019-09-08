@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
+import org.apache.commons.codec.binary.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +53,19 @@ public class BookingController {
 	public ResponseEntity<Booking> bookTicket(@Valid @RequestBody MovieBookingRequest request) throws Exception {
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		
+		
+		        String plainCredentials="diwakar:abc123";
+		        String base64Credentials = new String(Base64.encodeBase64(plainCredentials.getBytes()));
+		         
+		      
+		        headers.add("Authorization", "Basic " + base64Credentials);
+		        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		       
+		    
+		
+		
+		//headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<MovieBookingRequest> entity = new HttpEntity<>(request, headers);
 		
 		try {
@@ -68,10 +81,12 @@ public class BookingController {
 		}
 		catch(HttpStatusCodeException e) {
 			String errorpayload = e.getResponseBodyAsString();
+			e.printStackTrace();
 			throw new BookingNotFoundException(errorpayload);
 	    }
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			throw e;
 		}
 		
