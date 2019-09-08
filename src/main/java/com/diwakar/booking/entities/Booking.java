@@ -15,7 +15,7 @@ public class Booking {
 	
 	private String thId;
 	
-	private String slotNumber;
+	private int slotNumber;
 	
 	private String movieName;
 	
@@ -45,11 +45,11 @@ public class Booking {
 		this.thId = thId;
 	}
 
-	public String getSlotNumber() {
+	public int getSlotNumber() {
 		return slotNumber;
 	}
 
-	public void setSlotNumber(String slotNumber) {
+	public void setSlotNumber(int slotNumber) {
 		this.slotNumber = slotNumber;
 	}
 

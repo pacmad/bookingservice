@@ -1,7 +1,5 @@
 package com.diwakar.booking.request;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
@@ -11,25 +9,25 @@ public class MovieBookingRequest {
 
 private String bookingId;
 	
-	@NotEmpty
+	
 	@NotNull
 	private String userId;
 	
-	@NotEmpty
+	
 	@NotNull
 	private String thId;
 	
-	@NotEmpty
-	@NotNull
-	private String slotNumber;
 	
-	@NotEmpty
+	@NotNull
+	private int slotNumber;
+	
+	
 	@NotNull
 	private String movieName;
 	
-	@NotEmpty
+	
 	@NotNull
-	private String seatsToBook;
+	private int seatsToBook;
 
 	
 	public String getBookingId() {
@@ -56,11 +54,11 @@ private String bookingId;
 		this.thId = thId;
 	}
 
-	public String getSlotNumber() {
+	public int getSlotNumber() {
 		return slotNumber;
 	}
 
-	public void setSlotNumber(String slotNumber) {
+	public void setSlotNumber(int slotNumber) {
 		this.slotNumber = slotNumber;
 	}
 
@@ -72,11 +70,11 @@ private String bookingId;
 		this.movieName = movieName;
 	}
 
-	public String getSeatsToBook() {
+	public int getSeatsToBook() {
 		return seatsToBook;
 	}
 
-	public void setSeatsToBook(String seatsToBook) {
+	public void setSeatsToBook(int seatsToBook) {
 		this.seatsToBook = seatsToBook;
 	}
 

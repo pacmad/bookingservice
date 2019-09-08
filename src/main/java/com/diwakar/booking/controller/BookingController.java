@@ -1,6 +1,7 @@
 package com.diwakar.booking.controller;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.diwakar.booking.entities.Booking;
 import com.diwakar.booking.request.MovieBookingRequest;
+import com.diwakar.booking.service.BookingService;
 
 @RestController
 @RequestMapping("/v1/bookings")
@@ -30,6 +33,17 @@ public class BookingController {
 
 	@Autowired
 	RestTemplate restTemplate;
+
+	@Autowired
+	BookingService bookingService;
+
+	// For listing down all bookings of a user
+	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<Booking>> getAllTheaters(@PathVariable("userId") String userId) throws Exception {
+
+		return new ResponseEntity<List<Booking>>(bookingService.getAllBookingsByUserId(userId), HttpStatus.OK);
+
+	}
 
 	@RequestMapping(value = "/bookMovie", method = RequestMethod.POST)
 	public ResponseEntity<Object> bookTicket(@Valid @RequestBody MovieBookingRequest request) {
