@@ -1,36 +1,34 @@
 package com.diwakar.booking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
 
 import com.diwakar.booking.dao.CustomSequences;
 
 import org.springframework.data.mongodb.core.query.Query;
 
 
+@Service
 public class NextSequenceService  {
 	
-    public static final String USER_ID_SEQUENCE_NAME = "bookingId";
- 
+    @Autowired 
+    private MongoTemplate mongoTemplate;
     
-    @Autowired
-     MongoTemplate mongoTemplate;
- 
-	/*
-	 * @Autowired public MongoTemplate CustomSequences(MongoTemplate mongoTemplate){
-	 * this.mongoTemplate = mongoTemplate; }
-	 */
     
-    public long getNextUserIdSequence() {
-        return increaseCounter(USER_ID_SEQUENCE_NAME);
-    }
- 
-    private long increaseCounter(String counterName){
-        Query query = new Query(Criteria.where("name").is(counterName));
-        Update update = new Update().inc("sequence", 1);
-        CustomSequences counter = mongoTemplate.findAndModify(query, update, CustomSequences.class); // return old Counter object
+
+    public int getNextSequence(String seqName)
+    {
+        CustomSequences counter = mongoTemplate.findAndModify(
+        		new Query(Criteria.where("_id").is(seqName)),
+            new Update().inc("seq",1),
+            new FindAndModifyOptions().returnNew(true).upsert(true),
+            CustomSequences.class);
         return counter.getSeq();
     }
 }

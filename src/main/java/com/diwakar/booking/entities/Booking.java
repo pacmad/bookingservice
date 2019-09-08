@@ -9,7 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "bookings")
 public class Booking {
 	
-	private long bookingId;
+	
+	private int bookingId;
 	
 	private String userId;
 	
@@ -21,11 +22,11 @@ public class Booking {
 	
 	private int seatsBooked;
 
-	public long getBookingId() {
+	public int getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(long bookingId) {
+	public void setBookingId(int bookingId) {
 		this.bookingId = bookingId;
 	}
 

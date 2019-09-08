@@ -38,12 +38,13 @@ public class BookingService {
 
 		try {
 			Booking booking = new Booking();
-			booking.setBookingId(sequenceService.getNextUserIdSequence());
+			booking.setBookingId(sequenceService.getNextSequence("customSequences"));
 			booking.setThId(request.getThId());
+			booking.setUserId(request.getUserId());
 			booking.setMovieName(request.getMovieName());
 			booking.setSeatsBooked(request.getSeatsToBook());
 			booking.setSlotNumber(request.getSlotNumber());
-			return booking;
+			return bookingRepo.save(booking);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
