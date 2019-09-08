@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import com.diwakar.booking.entities.Booking;
@@ -51,11 +52,18 @@ public class BookingController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 		HttpEntity<MovieBookingRequest> entity = new HttpEntity<>(request, headers);
+		
+		try {
 
-		ResponseEntity<Object> response = restTemplate.exchange(
-				"http://localhost:8080/v1/theatres/bookMovieTickets/{theater_id}", HttpMethod.POST, entity,
-				Object.class);
-		return response;
+			ResponseEntity<Object> response = restTemplate.exchange(
+					"http://localhost:8080/v1/theaters/bookMovieTickets", HttpMethod.POST, entity,
+					Object.class);
+			return response;
+		}
+		catch(HttpStatusCodeException e) {
+	        return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+	                .body(e.getResponseBodyAsString());
+	    }
 
 	}
 
