@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "bookings")
 public class Booking {
 	
-	private String bookingId;
+	private long bookingId;
 	
 	private String userId;
 	
@@ -19,13 +19,13 @@ public class Booking {
 	
 	private String movieName;
 	
-	private String seatsBooked;
+	private int seatsBooked;
 
-	public String getBookingId() {
+	public long getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(String bookingId) {
+	public void setBookingId(long bookingId) {
 		this.bookingId = bookingId;
 	}
 
@@ -61,11 +61,11 @@ public class Booking {
 		this.movieName = movieName;
 	}
 
-	public String getSeatsBooked() {
+	public int getSeatsBooked() {
 		return seatsBooked;
 	}
 
-	public void setSeatsBooked(String seatsBooked) {
+	public void setSeatsBooked(int seatsBooked) {
 		this.seatsBooked = seatsBooked;
 	}
 

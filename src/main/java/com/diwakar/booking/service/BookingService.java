@@ -13,12 +13,16 @@ import com.diwakar.booking.dao.BookingRepository;
 import com.diwakar.booking.entities.Booking;
 import com.diwakar.booking.exception.BookingNotFoundException;
 import com.diwakar.booking.request.MovieBookingRequest;
+import com.diwakar.booking.response.MovieBookingResponse;
 
 @Service
 public class BookingService {
 
 	@Autowired
 	BookingRepository bookingRepo;
+
+	@Autowired
+	NextSequenceService sequenceService;
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
@@ -29,10 +33,26 @@ public class BookingService {
 		return new Booking();
 
 	}
-	
-	
-	public List<Booking>getAllBookingsByUserId(String userId)
-	{
+
+	public Booking updateBookingInfo(MovieBookingRequest request) {
+
+		try {
+			Booking booking = new Booking();
+			booking.setBookingId(sequenceService.getNextUserIdSequence());
+			booking.setThId(request.getThId());
+			booking.setMovieName(request.getMovieName());
+			booking.setSeatsBooked(request.getSeatsToBook());
+			booking.setSlotNumber(request.getSlotNumber());
+			return booking;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+
+		}
+
+	}
+
+	public List<Booking> getAllBookingsByUserId(String userId) {
 
 		List<Booking> bookings = mongoTemplate.find(new Query(Criteria.where("userId").is(userId)), Booking.class);
 		try {

@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 public class NextSequenceService  {
 	
-    public static final String USER_ID_SEQUENCE_NAME = "user_id";
+    public static final String USER_ID_SEQUENCE_NAME = "bookingId";
  
     
     @Autowired

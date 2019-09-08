@@ -49,7 +49,7 @@ public class BookingController {
 	}
 
 	@RequestMapping(value = "/bookMovie", method = RequestMethod.POST)
-	public ResponseEntity<MovieBookingResponse> bookTicket(@Valid @RequestBody MovieBookingRequest request) throws Exception {
+	public ResponseEntity<Booking> bookTicket(@Valid @RequestBody MovieBookingRequest request) throws Exception {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -60,8 +60,11 @@ public class BookingController {
 			ResponseEntity<MovieBookingResponse> response = restTemplate.exchange(
 					"http://localhost:8080/v1/theaters/bookMovieTickets", HttpMethod.POST, entity,
 					MovieBookingResponse.class);
+			Booking bookingInfo = bookingService.updateBookingInfo(request);
 			
-			return response;
+			return new ResponseEntity<Booking>(bookingInfo,HttpStatus.OK);
+			
+			
 		}
 		catch(HttpStatusCodeException e) {
 			String errorpayload = e.getResponseBodyAsString();
