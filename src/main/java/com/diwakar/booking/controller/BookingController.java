@@ -23,7 +23,9 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import com.diwakar.booking.entities.Booking;
+import com.diwakar.booking.exception.BookingNotFoundException;
 import com.diwakar.booking.request.MovieBookingRequest;
+import com.diwakar.booking.response.MovieBookingResponse;
 import com.diwakar.booking.service.BookingService;
 
 @RestController
@@ -47,7 +49,7 @@ public class BookingController {
 	}
 
 	@RequestMapping(value = "/bookMovie", method = RequestMethod.POST)
-	public ResponseEntity<Object> bookTicket(@Valid @RequestBody MovieBookingRequest request) {
+	public ResponseEntity<MovieBookingResponse> bookTicket(@Valid @RequestBody MovieBookingRequest request) throws Exception {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -55,15 +57,21 @@ public class BookingController {
 		
 		try {
 
-			ResponseEntity<Object> response = restTemplate.exchange(
+			ResponseEntity<MovieBookingResponse> response = restTemplate.exchange(
 					"http://localhost:8080/v1/theaters/bookMovieTickets", HttpMethod.POST, entity,
-					Object.class);
+					MovieBookingResponse.class);
+			
 			return response;
 		}
 		catch(HttpStatusCodeException e) {
-	        return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
-	                .body(e.getResponseBodyAsString());
+			String errorpayload = e.getResponseBodyAsString();
+			throw new BookingNotFoundException(errorpayload);
 	    }
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
 
 	}
 
